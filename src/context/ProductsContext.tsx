@@ -15,7 +15,7 @@ type ProductsContextProps = {
 
 export const ProductsContext = createContext({} as ProductsContextProps);
 
-export const ProductsProvider = ({ children }: any) => {
+export const ProductsProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { status } = useContext(AuthContext)
 
@@ -24,22 +24,17 @@ export const ProductsProvider = ({ children }: any) => {
 
     const loadProducts = async () => {
         const resp = await restoBarApi.post<ProductResponse>('/client/product/list', { limit: 10, offset: 0 });
-        //setProducts([...products, ...resp.data.docs]);
         setProducts([...resp.data.docs])
-        //console.log(resp.data.docs)
     };
     const loadCategories = async () => {
         const resp = await restoBarApi.post<CategoryResponse>('/client/category/list');
         setCategories(['Todos', ...resp.data.docs.map(category => (category.name))]);
-        // console.log(resp.data, categories)
 
 
     };
     //getPRoductById
     const loadProductsByCategory = async (id: string): Promise<Productos> => {
         const resp = await restoBarApi.post<Productos>('/client/product/get', { id: id });
-        // console.log(resp.data, "holaaaaa");
-        // setCategory(resp.product);
         return resp.data;
     };
 
@@ -48,8 +43,6 @@ export const ProductsProvider = ({ children }: any) => {
             loadCategories();
             loadProducts();
         }
-
-        //loadProductsByCategory(),
     }, [status])
 
     return (

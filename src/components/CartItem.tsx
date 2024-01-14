@@ -16,27 +16,16 @@ import {
     SPACING,
 } from '../theme/Theme';
 import CustomIcon from './CustomIcon';
+import { Item } from '../interfaces/appInterfaces';
 
 interface CartItemProps {
-    id: string;
-    name: string;
-    image: string;
-    // special_ingredient: string;
-    roasted: string;
-    prices: any;
-    // type: string;
-    incrementCartItemQuantityHandler: any;
-    decrementCartItemQuantityHandler: any;
+    product: Item;
+    incrementCartItemQuantityHandler: () => void;
+    decrementCartItemQuantityHandler: () => void;
 }
 
 const CartItem: React.FC<CartItemProps> = ({
-    id,
-    name,
-    image,
-    // special_ingredient,
-    roasted,
-    prices,
-    // type,
+    product,
     incrementCartItemQuantityHandler,
     decrementCartItemQuantityHandler,
 
@@ -51,7 +40,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
         return imgDefault;
     }
-    console.log(prices)
+    //console.log(prices)
     return (
         <View>
             <LinearGradient
@@ -61,14 +50,14 @@ const CartItem: React.FC<CartItemProps> = ({
                 style={styles.CartItemSingleLinearGradient}>
                 <View>
                     <Image
-                        source={{ uri: getImage(image) }}
+                        source={{ uri: getImage(product.image) }}
                         style={styles.CartItemSingleImage}
                     />
                 </View>
                 <View style={styles.CartItemSingleInfoContainer}>
 
                     <View style={styles.CartItemSingleSizeValueContainer}>
-                        <Text style={styles.CartItemTitle}>{name}</Text>
+                        <Text style={styles.CartItemTitle}>{product.name}</Text>
 
                         {/*<Text style={styles.SizeCurrency}>
                             {'S/.'}
@@ -82,7 +71,7 @@ const CartItem: React.FC<CartItemProps> = ({
                             <Text style={styles.CartItemSubtitle}>Cantidad:</Text>
                             <Text style={styles.SizeCurrency}>
                                 {'S/.'}
-                                <Text style={styles.SizePrice}> {prices[0].price}</Text>
+                                <Text style={styles.SizePrice}> {product.price * product.quantity}</Text>
                             </Text>
                         </View>
 
@@ -90,9 +79,7 @@ const CartItem: React.FC<CartItemProps> = ({
 
                             <TouchableOpacity
                                 style={styles.CartItemIcon}
-                                onPress={() => {
-                                    decrementCartItemQuantityHandler(id, prices[0].size);
-                                }}>
+                                onPress={decrementCartItemQuantityHandler}>
                                 <CustomIcon
                                     name="minus"
                                     color={COLORS.primaryWhiteHex}
@@ -101,14 +88,12 @@ const CartItem: React.FC<CartItemProps> = ({
                             </TouchableOpacity>
                             <View style={styles.CartItemQuantityContainer}>
                                 <Text style={styles.CartItemQuantityText}>
-                                    {prices[0].quantity}
+                                    {product.quantity}
                                 </Text>
                             </View>
                             <TouchableOpacity
                                 style={styles.CartItemIcon}
-                                onPress={() => {
-                                    incrementCartItemQuantityHandler(id, prices[0].size);
-                                }}>
+                                onPress={incrementCartItemQuantityHandler}>
                                 <CustomIcon
                                     name="add"
                                     color={COLORS.primaryWhiteHex}

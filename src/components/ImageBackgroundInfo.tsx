@@ -49,10 +49,10 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
     //ratings_count,
     //roasted,
     BackHandler,
-    TogglePressHandler,
+    // TogglePressHandler,
     ToggleFavourite,
 }) => {
-    console.log(id, favourite, 'desde imgagebackgroundinfo');
+    // console.log(id, favourite, 'desde imgagebackgroundinfo');
     return (
         <View>
             <ImageBackground
@@ -72,12 +72,12 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => {
-                                ToggleFavourite(favourite, id);
+                                //ToggleFavourite(favourite, id);
                                 //type, 
                                 //id);
-                                TogglePressHandler({
+                                ToggleFavourite({
                                     id,
-                                    favourite: true,
+                                    favourite,
                                     name,
                                     imagelink
                                 })
@@ -95,8 +95,12 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
                     <View style={styles.ImageHeaderBarContainerWithoutBack}>
                         <TouchableOpacity
                             onPress={() => {
-                                ToggleFavourite(favourite, //type, 
-                                    id);
+                                ToggleFavourite({
+                                    id,
+                                    favourite,
+                                    name,
+                                    imagelink
+                                })
                             }}>
                             <GradientBGIcon
                                 name="like"

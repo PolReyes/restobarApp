@@ -16,33 +16,22 @@ import PaymentFooter from '../components/PaymentFooter';
 import CartItem from '../components/CartItem';
 
 const CartScreen = ({ navigation, route }: any) => {
-    const CartList = useStore((state: any) => state.CartList);
-    const CartPrice = useStore((state: any) => state.CartPrice);
+    const CartList = useStore((state) => state.CartList);
+    const CartPrice = useStore((state) => state.CartPrice);
     const incrementCartItemQuantity = useStore(
-        (state: any) => state.incrementCartItemQuantity,
+        (state) => state.incrementCartItemQuantity,
     );
     const decrementCartItemQuantity = useStore(
-        (state: any) => state.decrementCartItemQuantity,
+        (state) => state.decrementCartItemQuantity,
     );
-    const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
     const tabBarHeight = useBottomTabBarHeight();
 
     const buttonPressHandler = () => {
-        navigation.push('Payment', { amount: CartPrice });
-    };
-
-    const incrementCartItemQuantityHandler = (id: string, size: string) => {
-        incrementCartItemQuantity(id, size);
-        calculateCartPrice();
-    };
-
-    const decrementCartItemQuantityHandler = (id: string, size: string) => {
-        decrementCartItemQuantity(id, size);
-        calculateCartPrice();
+        navigation.push('Order', { amount: CartPrice });
     };
 
 
-    console.log("CartList ", CartList)
+    //console.log("CartList ", CartList)
 
     return (
         <View style={styles.ScreenContainer}>
@@ -60,30 +49,22 @@ const CartScreen = ({ navigation, route }: any) => {
                             <EmptyListAnimation title={'Seleccione un producto'} />
                         ) : (
                             <View style={styles.ListItemContainer}>
-                                {CartList.map((data: any) => (
+                                {CartList.map((data) => (
                                     <TouchableOpacity
                                         onPress={() => {
                                             navigation.push('Details', {
-                                                index: data.index,
-                                                id: data.id,
-                                                // type: data.type,
-
+                                                ...data
                                             });
-                                            // console.log(CartList);
                                         }}
                                         key={data.id}>
                                         <CartItem
-                                            id={data.id}
-                                            name={data.name}
-                                            image={data.image}
-                                            roasted={data.roasted}
-                                            prices={data.prices}
+                                            product={data}
 
                                             incrementCartItemQuantityHandler={
-                                                incrementCartItemQuantityHandler
+                                                () => incrementCartItemQuantity(data.id)
                                             }
                                             decrementCartItemQuantityHandler={
-                                                decrementCartItemQuantityHandler
+                                                () => decrementCartItemQuantity(data.id)
                                             }
                                         />
                                     </TouchableOpacity>
@@ -96,11 +77,8 @@ const CartScreen = ({ navigation, route }: any) => {
                         <PaymentFooter
                             buttonPressHandler={buttonPressHandler}
                             buttonTitle="Realizar pedido"
-                            price={CartPrice}
                         />
-                    ) : (
-                        <></>
-                    )}
+                    ) : null}
                 </View>
             </ScrollView>
         </View>

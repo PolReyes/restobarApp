@@ -22,13 +22,13 @@ import { ProductsContext } from '../context/ProductsContext';
 import PaymentFooter from '../components/PaymentFooter';
 import { Producto, Categoria } from '../interfaces/appInterfaces';
 
-const DetailsScreen = ({ navigation, route }: any) => {
+export const DetailsScreen = ({ navigation, route }: any) => {
 
     const { id = '', categoryId = '', name = '' } = route.params;
 
     const { loadProductsByCategory } = useContext(ProductsContext);
 
-
+    const FavoritesList = useStore((state) => state.FavoritesList);
 
     const [ItemOfIndex, setItemOfIndex] = useState<Producto>({
         id: '',
@@ -50,92 +50,54 @@ const DetailsScreen = ({ navigation, route }: any) => {
     /* const ItemOfIndex = useStore((state: any) =>
         route.params.type == 'Coffee' ? state.CoffeeList : state.BeanList,
     )[route.params.index]; */
-    const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
+    const addToFavoriteList = useStore((state) => state.addToFavoriteList);
     const deleteFromFavoriteList = useStore(
-        (state: any) => state.deleteFromFavoriteList,
+        (state) => state.deleteFromFavoriteList,
     );
-    const addToCart = useStore((state: any) => state.addToCart);
-    const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+    const addToCart = useStore((state) => state.addToCart);
+    const calculateCartPrice = useStore((state) => state.calculateCartPrice);
 
-    const [price, setPrice] = useState(0);
+    //const [price, setPrice] = useState(0);
 
 
     const [fullDesc, setFullDesc] = useState(false);
 
-    const ToggleFavourite = (favourite: boolean, id: string) => {
-        favourite ? deleteFromFavoriteList(id) : addToFavoriteList(id);
+    const ToggleFavourite = (producto: Producto) => {
+        if (FavoritesList.some(({ id }) => id === producto.id)) {
+            deleteFromFavoriteList(producto);
+            ToastAndroid.showWithGravity(
+                `${name} se eliminó de Favoritos`,
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+            );
+        } else {
+            addToFavoriteList(producto);
+            ToastAndroid.showWithGravity(
+                `${name} se agregó a Favoritos`,
+                ToastAndroid.SHORT,
+                ToastAndroid.CENTER,
+            );
+        }
+
     };
 
     const BackHandler = () => {
         navigation.pop();
     };
 
-    const addToCarthandler = ({
-        id,
-        index,
-        name,
-        roasted,
-        imagelink,
-        //special_ingredient,
-        //type,
-        price,
-    }: any) => {
-        addToCart({
-            id,
-            index,
-            name,
-            roasted,
-            imagelink,
-            //special_ingredient,
-            //type,
-            prices: [{ ...price, quantity: 1 }],
-        });
+    const addToCarthandler = (product: Producto) => {
+        addToCart(
+            product
+        );
         calculateCartPrice();
-        navigation.navigate('Cart');
+        navigation.navigate('Carrito');
     };
 
     const loadProduct = async () => {
         if (id.length === 0) return;
         const product = await loadProductsByCategory(id);
-        //console.log(product)
         setItemOfIndex(product.data.product)
-        setPrice(product.data.product.price)
-        /*setFormValue({
-            _id: id,
-            categoriaId: product.categoria._id,
-            img: product.img || '',
-            nombre
-        }) */
     }
-    const AddToFavorite = ({
-        id,
-        //index,
-        name,
-        // roasted,
-        imagelink,
-        favourite,
-        special_ingredient,
-        type,
-        //price,
-        prices,
-    }: any) => {
-        addToFavoriteList({
-            id,
-            //index,
-            name,
-            favourite: true,
-            // roasted,
-            imagelink,
-            //price,
-            prices,
-        });
-        ToastAndroid.showWithGravity(
-            `${name} se agregó a Favoritos`,
-            ToastAndroid.SHORT,
-            ToastAndroid.CENTER,
-        );
-        // console.log(prices, 'quantity')
-    };
 
     const getImage = (img: string) => {
         let imgDefault = 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/logo-sin-bg-lite.png?alt=media';
@@ -163,7 +125,7 @@ const DetailsScreen = ({ navigation, route }: any) => {
                     EnableBackHandler={true}
                     imagelink={getImage(ItemOfIndex.image)}
                     id={ItemOfIndex.id}
-                    favourite={false}
+                    favourite={FavoritesList.some(({ id: productId }) => productId === id)}
                     name={ItemOfIndex.name}
                     description={ItemOfIndex.description}
                     //ingredients={ItemOfIndex.ingredients}
@@ -171,7 +133,7 @@ const DetailsScreen = ({ navigation, route }: any) => {
                     //ratings_count={ItemOfIndex.ratings_count}
                     //roasted={ItemOfIndex.roasted}
                     BackHandler={BackHandler}
-                    TogglePressHandler={AddToFavorite}
+                    // TogglePressHandler={AddToFavorite}
                     ToggleFavourite={ToggleFavourite}
                 />
                 <View style={styles.FooterInfoArea}>
@@ -233,19 +195,11 @@ const DetailsScreen = ({ navigation, route }: any) => {
                     </View>
                 </View>
                 <PaymentFooter
-                    price={price}
+                    price={ItemOfIndex.price}
+                    isDetail={true}
                     buttonTitle="Agregar"
                     buttonPressHandler={() => {
-                        /* addToCarthandler({
-                             id: ItemOfIndex.id,
-                             index: ItemOfIndex.index,
-                             name: ItemOfIndex.name,
-                             roasted: ItemOfIndex.roasted,
-                             imagelink: ItemOfIndex.imagelink,
-                             special_ingredient: ItemOfIndex.special_ingredient,
-                             type: ItemOfIndex.type,
-                             price: price,
-                         });*/
+                        addToCarthandler(ItemOfIndex);
                     }}
                 />
             </ScrollView>
@@ -297,5 +251,3 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_medium,
     },
 });
-
-export default DetailsScreen;

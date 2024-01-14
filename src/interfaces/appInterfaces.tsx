@@ -75,7 +75,17 @@ export interface Producto {
     available: number;
     description: string;
 
+}
 
+export interface Item {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    category: Categoria;
+    available: number;
+    description: string;
+    quantity: number;
 }
 
 export interface CategoryResponse {
@@ -91,16 +101,38 @@ export interface Categoria {
 
 // Ordenes -* Pedidos
 
-export interface OrderProduct {
-    product: string;
+export interface DetailOrder {
+    id: string;
+    product: Producto,
+    price_of_sale: number;
     quantity: number;
+
 }
 
-export interface OrderData {
+export interface Order {
     reception: string;
     user_document_number: string;
     order_type: string;
     payment_method: string;
     order_channel: string;
-    items: OrderProduct[]
+    items: DetailOrder[]
+}
+
+export interface OrderResponse {
+    status_code: number;
+    docs: Order[];
+}
+
+// Recepciones
+
+export interface Reception {
+    id: string,
+    number_table: string;
+    available: number;
+    code: string;
+}
+
+export interface ReceptionResponse {
+    status_code: number;
+    docs: Reception[];
 }

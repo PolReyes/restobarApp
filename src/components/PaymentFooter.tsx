@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     BORDERRADIUS,
     COLORS,
@@ -7,29 +7,39 @@ import {
     FONTSIZE,
     SPACING,
 } from '../theme/Theme';
-
-interface PriceProps {
-    //price: string;
-    // currency: string;
-}
+import { useStore } from '../store/store';
 
 interface PaymentFooterProps {
-    price: number;
-    buttonPressHandler: any;
+    price?: number;
+    isDetail?: boolean;
+    buttonPressHandler: () => void;
     buttonTitle: string;
 }
 
 const PaymentFooter: React.FC<PaymentFooterProps> = ({
     price,
+    isDetail = false,
     buttonPressHandler,
     buttonTitle,
 }) => {
+
+    const CartList = useStore((state) => state.CartList);
+    const CartPrice = useStore((state) => state.CartPrice);
+    const calculateCartPrice = useStore((state) => state.calculateCartPrice);
+
+    useEffect(() => {
+        if (isDetail === false) {
+            calculateCartPrice();
+        }
+
+    }, [CartList])
+
     return (
         <View style={styles.PriceFooter}>
             <View style={styles.PriceContainer}>
                 <Text style={styles.PriceTitle}>Precio</Text>
                 <Text style={styles.PriceText}>
-                    {'S/. '}<Text style={styles.Price}>{price}</Text>
+                    {'S/. '}<Text style={styles.Price}>{isDetail ? price : CartPrice}</Text>
                 </Text>
             </View>
             <TouchableOpacity

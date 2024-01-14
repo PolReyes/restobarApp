@@ -91,17 +91,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     S/. <Text style={styles.CardPrice}>{price}</Text>
                 </Text>
                 <TouchableOpacity
-                    onPress={() => {
-
-                        buttonPressHandler({
-                            id,
-                            image,
-                            name,
-                            //price,
-                            // description,
-                            prices: [{ price, quantity: 1 }],
-                        });
-                    }}>
+                    onPress={buttonPressHandler}>
                     <BGIcon
                         color={COLORS.primaryWhiteHex}
                         name={'add'}

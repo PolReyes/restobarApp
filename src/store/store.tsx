@@ -6,162 +6,99 @@ import { useContext } from 'react';
 import { ProductsContext } from '../context/ProductsContext';
 //import CoffeeData from '../data/CoffeeData';
 //import BeansData from '../data/BeansData';
-import { Producto } from '../interfaces/appInterfaces';
 import CartItem from '../components/CartItem';
+import { Item, Producto } from '../interfaces/appInterfaces';
 
 //const { products, categories } = useContext(ProductsContext);
 //console.log(products)
-export const useStore = create(
+
+interface Store {
+    CartPrice: number,
+    FavoritesList: Producto[],
+    CartList: Item[],
+    //OrderHistoryList: Pedidos[],
+    addToFavoriteList: (product: Producto) => void;
+    deleteFromFavoriteList: (product: Producto) => void;
+    addToCart: (product: Producto) => void;
+    incrementCartItemQuantity: (id: string) => void;
+    decrementCartItemQuantity: (id: string) => void;
+    calculateCartPrice: () => void;
+}
+
+
+
+export const useStore = create<Store>()(
 
     persist(
         (set, get) => ({
-            // CoffeeList: CoffeeData,
-            //BeanList: BeansData,
-            //ProductList: [],
             CartPrice: 0,
             FavoritesList: [],
             CartList: [],
             OrderHistoryList: [],
-            addToCart: (cartItem: any) =>
+            addToCart: (product: Producto) =>
                 set(
                     produce(state => {
-                        let found = false;
-                        for (let i = 0; i < state.CartList.length; i++) {
-                            if (state.CartList[i].id == cartItem.id) {
-                                found = true;
-                                let size = false;
-                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                                    if (
-                                        state.CartList[i].prices[j].size == cartItem.prices[0].size
-                                    ) {
-                                        size = true;
-                                        state.CartList[i].prices[j].quantity++;
-                                        break;
-                                    }
-                                }
-                                if (size == false) {
-                                    state.CartList[i].prices.push(cartItem.prices[0]);
-                                }
-                                state.CartList[i].prices.sort((a: any, b: any) => {
-                                    if (a.size > b.size) {
-                                        return -1;
-                                    }
-                                    if (a.size < b.size) {
-                                        return 1;
-                                    }
-                                    return 0;
-                                });
-                                break;
+                        const found = get().CartList.find(({ id }) => id === product.id)
+
+                        if (found) {
+                            if (found.quantity < 10) {
+                                state.CartList = get().CartList.map((item) => item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item);
                             }
                         }
-                        if (found == false) {
-                            state.CartList.push(cartItem);
+                        else {
+                            state.CartList.push({ ...product, quantity: 1 });
                         }
                     }),
                 ),
             calculateCartPrice: () =>
                 set(
                     produce(state => {
-                        let totalprice = 0;
-                        for (let i = 0; i < state.CartList.length; i++) {
-                            let tempprice = 0;
-                            for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                                tempprice =
-                                    tempprice +
-                                    parseFloat(state.CartList[i].prices[j].price) *
-                                    state.CartList[i].prices[j].quantity;
-                            }
-                            state.CartList[i].ItemPrice = tempprice.toFixed(2).toString();
-                            totalprice = totalprice + tempprice;
-                        }
-                        state.CartPrice = totalprice.toFixed(2).toString();
+                        let totalPrice = 0;
+                        state.CartPrice = get().CartList.reduce((acumulado, item) => acumulado + item.price * item.quantity, totalPrice);
+
                     }),
                 ),
-            addToFavoriteList: (product: any) =>
+            addToFavoriteList: (product: Producto) =>
                 set(
                     produce(state => {
-                        let found = false;
-                        for (let i = 0; i < state.FavoritesList.length; i++) {
-                            if (state.FavoritesList[i].id == product.id) {
-                                found = true;
-                                if (state.FavoritesList[i].favourite == false) {
-                                    state.FavoritesList[i].favourite = true;
-                                    state.FavoritesList.unshift(state.FavoritesList[i]);
-                                } else {
-                                    state.FavoritesList[i].favourite = false;
-                                }
-                                break;
-                            }
-                        }
-                        if (found == false) {
+                        const found = get().FavoritesList.some(({ id }) => id === product.id)
+
+                        if (!found) {
                             state.FavoritesList.push(product);
-                            //console.log(state.FavoritesList, "desde estore");
                         }
-                        // console.log(state.FavoritesList, "desde afuera");
-                    }),
-                ),
-            deleteFromFavoriteList: (product: any) =>
+                    })),
+            deleteFromFavoriteList: (product: Producto) =>
                 set(
                     produce(state => {
-                        for (let i = 0; i < state.FavoritesList.length; i++) {
-                            if (state.FavoritesList[i].id == product.id) {
-                                if (state.FavoritesList[i].favourite == true) {
-                                    state.FavoritesList[i].favourite = false;
-                                } else {
-                                    state.FavoritesList[i].favourite = true;
-                                }
-                                break;
-                            }
-                        }
-                        let spliceIndex = -1;
-                        for (let i = 0; i < state.FavoritesList.length; i++) {
-                            if (state.FavoritesList[i].id == product.id) {
-                                spliceIndex = i;
-                                break;
-                            }
-                        }
-                        state.FavoritesList.splice(spliceIndex, 1);
-                    }),
-                ),
-            incrementCartItemQuantity: (id: string, size: string) =>
-                set(
-                    produce(state => {
-                        for (let i = 0; i < state.CartList.length; i++) {
-                            if (state.CartList[i].id == id) {
-                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                                    if (state.CartList[i].prices[j].size == size) {
-                                        state.CartList[i].prices[j].quantity++;
-                                        break;
-                                    }
-                                }
-                            }
+                        const index = get().FavoritesList.findIndex(({ id }) => id === product.id)
+
+                        if (index != -1) {
+                            state.FavoritesList.splice(index, 1);
                         }
                     }),
                 ),
-            decrementCartItemQuantity: (id: string, size: string) =>
+            incrementCartItemQuantity: (id: string) =>
                 set(
                     produce(state => {
-                        for (let i = 0; i < state.CartList.length; i++) {
-                            if (state.CartList[i].id == id) {
-                                for (let j = 0; j < state.CartList[i].prices.length; j++) {
-                                    if (state.CartList[i].prices[j].size == size) {
-                                        if (state.CartList[i].prices.length > 1) {
-                                            if (state.CartList[i].prices[j].quantity > 1) {
-                                                state.CartList[i].prices[j].quantity--;
-                                            } else {
-                                                state.CartList[i].prices.splice(j, 1);
-                                            }
-                                        } else {
-                                            if (state.CartList[i].prices[j].quantity > 1) {
-                                                state.CartList[i].prices[j].quantity--;
-                                            } else {
-                                                state.CartList.splice(i, 1);
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
+                        const found = get().CartList.find((item) => item.id === id)
+
+                        if (found && found.quantity < 10) {
+                            state.CartList = get().CartList.map((item) => item.id === id ? { ...item, quantity: item.quantity + 1 } : item);
+                        }
+                    }),
+                ),
+            decrementCartItemQuantity: (id: string) =>
+                set(
+                    produce(state => {
+                        const found = get().CartList.find((item) => item.id === id)
+
+                        if (found && found.quantity > 0) {
+                            if (found.quantity === 1) {
+                                state.CartList = get().CartList.filter((item) => item.id != id)
+                            } else {
+                                state.CartList = get().CartList.map((item) => item.id === id ? { ...item, quantity: item.quantity - 1 } : item);
                             }
+
                         }
                     }),
                 ),

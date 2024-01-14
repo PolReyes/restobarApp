@@ -105,29 +105,14 @@ export const HomeScreen = ({ navigation }: any) => {
         setSearchText('');
     };
 
-    const ProductCardAddToCart = ({
-        id,
-        index,
-        name,
-        // roasted,
-        image,
-        special_ingredient,
-        type,
-        //price,
-        prices,
-    }: any) => {
-        addToCart({
-            id,
-            index,
-            name,
-            // roasted,
-            image,
-            //price,
-            prices,
-        });
-        calculateCartPrice();
+    const ProductCardAddToCart = (
+        product
+            : Producto) => {
+        addToCart(
+            product);
+        // calculateCartPrice();
         ToastAndroid.showWithGravity(
-            `${name} se agregó al carrito`,
+            `${product.name} se agregó al carrito`,
             ToastAndroid.SHORT,
             ToastAndroid.CENTER,
         );
@@ -259,7 +244,7 @@ export const HomeScreen = ({ navigation }: any) => {
                                 name={item.name}
                                 // description={item.description}
                                 price={item.price}
-                                buttonPressHandler={ProductCardAddToCart}
+                                buttonPressHandler={() => ProductCardAddToCart(item)}
                                 navigation={navigation}
                             />
                         );

@@ -13,17 +13,20 @@ import { COLORS, SPACING } from '../theme/Theme';
 import HeaderBar from '../components/HeaderBar';
 import EmptyListAnimation from '../components/EmptyListAnimation';
 import FavoritesItemCard from '../components/FavoriteItemCard';
+import { Producto } from '../interfaces/appInterfaces';
 
 const FavoriteScreen = ({ navigation }: any) => {
-    const FavoritesList = useStore((state: any) => state.FavoritesList);
+    const FavoritesList = useStore((state) => state.FavoritesList);
     const tabBarHeight = useBottomTabBarHeight();
-    const addToFavoriteList = useStore((state: any) => state.addToFavoriteList);
+    const addToFavoriteList = useStore((state) => state.addToFavoriteList);
     const deleteFromFavoriteList = useStore(
-        (state: any) => state.deleteFromFavoriteList,
+        (state) => state.deleteFromFavoriteList,
     );
-    const ToggleFavourite = (favourite: boolean, type: string, id: string) => {
-        favourite ? deleteFromFavoriteList(type, id) : addToFavoriteList(type, id);
+    const ToggleFavourite = (producto: Producto) => {
+        FavoritesList.some(({ id }) => id === producto.id) ? deleteFromFavoriteList(producto) : addToFavoriteList(producto);
     };
+
+    console.log(FavoritesList, 'Desde favoriteScreen')
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -61,7 +64,7 @@ const FavoriteScreen = ({ navigation }: any) => {
                                             //ratings_count={data.ratings_count}
                                             //roasted={data.roasted}
                                             description={data.description}
-                                            favourite={data.favourite}
+                                            favourite={true}
                                             ToggleFavouriteItem={ToggleFavourite}
                                         />
                                     </TouchableOpacity>
