@@ -27,7 +27,7 @@ const authInicialState: AuthState = {
 
 export const AuthContext = createContext({} as AuthContextProps);
 
-export const AuthProvider = ({ children }: any) => {
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [state, dispatch] = useReducer(authReducer, authInicialState)
 

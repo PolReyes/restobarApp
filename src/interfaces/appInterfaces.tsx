@@ -102,9 +102,9 @@ export interface Categoria {
 // Ordenes -* Pedidos
 
 export interface DetailOrder {
-    id: string;
+    id?: string;
     product: Producto,
-    price_of_sale: number;
+    price_of_sale?: number;
     quantity: number;
 
 }
@@ -135,4 +135,9 @@ export interface Reception {
 export interface ReceptionResponse {
     status_code: number;
     docs: Reception[];
+}
+
+export interface DetailOrderCreate {
+    product: string,
+    quantity: number,
 }

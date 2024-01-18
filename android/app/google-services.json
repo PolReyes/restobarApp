@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "591760930545",
+    "project_id": "restobar-admin",
+    "storage_bucket": "restobar-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591760930545:android:2e4660c8d873cd0a7d5b50",
+        "android_client_info": {
+          "package_name": "com.restobarap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-vJv3fFCN70Hr4Fv_o7y8VVgjYHKKs4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
