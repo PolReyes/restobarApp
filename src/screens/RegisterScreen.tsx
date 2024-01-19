@@ -39,7 +39,11 @@ export const RegisterScreen = ({ navigation }: Props) => {
             [
                 {
                     text: 'Ok',
-                    onPress: removeError,
+                    onPress:
+                        () => {
+                            navigation.push('LoginScreen');
+                            removeError
+                        }
                 }
             ]);
     }, [infoMessage])

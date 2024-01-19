@@ -89,16 +89,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             //await AsyncStorage.setItem('token', resp.data.access_token)
             dispatch({
                 type: 'infoMessage',
-                payload: data.message.toString() || 'Usuario registrado correctamente',
+                payload: {
+                    info: data.message.toString() || 'Usuario registrado correctamente',
+                    error: ''
+                }
+
             })
             console.log(data.message.toString(), 'desde el try')
         } catch (error: any) {
             //console.log(error.response.data.errors);
             dispatch({
                 type: 'addError',
-                payload: error.data.message.toString() || 'Revise la información',
+                payload: {
+                    info: '',
+                    error: error.response.data.errors.toString() || 'Revise la información',
+                }
+
             })
-            console.log(error.data.message.toString(), 'desde el error')
+            console.log(error.response.data.errors.toString(), 'desde el error')
         }
     };
     const logOut = async () => {
@@ -110,7 +118,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             //console.log(error.response.data.errors);
             dispatch({
                 type: 'addError',
-                payload: 'Algo ocurrió al cerrar sesión',
+                payload: {
+                    info: '',
+                    error: 'Algo ocurrió al cerrar sesión',
+                }
+
             })
         } finally {
             await AsyncStorage.removeItem('token');

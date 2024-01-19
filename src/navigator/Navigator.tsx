@@ -7,6 +7,7 @@ import { LoadingScreen } from '../screens/LoadingScreen';
 import { TabNavigator } from './TabNavigator';
 import { DetailsScreen } from '../screens/DetailsScreen';
 import { OrderScreen } from '../screens/OrderScreen';
+import { WaitingOrderScreen } from '../screens/WaitingOrderScreen';
 
 const Stack = createStackNavigator();
 
@@ -36,6 +37,7 @@ export const Navigator = () => {
                         <Stack.Screen name="TabNavigator" component={TabNavigator} />
                         <Stack.Screen name="Details" component={DetailsScreen} />
                         <Stack.Screen name="Order" component={OrderScreen} />
+                        <Stack.Screen name="WaitingOrderScreen" component={WaitingOrderScreen} />
 
                     </>
 

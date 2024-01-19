@@ -7,9 +7,8 @@ import { Reception } from '../interfaces/appInterfaces';
 import { SelectCountry } from 'react-native-element-dropdown';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useStore } from '../store/store';
-import firestore from '@react-native-firebase/firestore';
 
-export const OrderScreen = () => {
+export const OrderScreen = ({ navigation }: any) => {
 
     const CartList = useStore((state) => state.CartList);
     const { receptions, getReceptions, createOrder } = useContext(OrderContext);
@@ -17,25 +16,25 @@ export const OrderScreen = () => {
     const [medioPago, setMedioPago] = useState('COMER EN LOCAL');
     const [tipoOrden, setTipoOrden] = useState('VISA');
 
-    const [estimatedTime, setEstimatedTime] = useState([]);
+    // const [estimatedTime, setEstimatedTime] = useState([]);
 
     const [numDocumento, setNumDocumento] = useState('');
 
 
 
-    async function loadEstimatedTime() {
+    /*async function loadEstimatedTime() {
 
-        const resp = firestore().collection('orders').onSnapshot(querySnapshot => {
+        const resp = firebase.firestore().collection('orders').onSnapshot(querySnapshot => {
 
             console.log("algo cambio")
         })
         return () => resp();
-    }
+    }*/
 
     useEffect(() => {
 
         getReceptions()
-        loadEstimatedTime()
+        // loadEstimatedTime()
 
     }, [])
 
@@ -155,9 +154,11 @@ export const OrderScreen = () => {
                 />
                 <Button
                     title='Revisar Pedido'
-                    onPress={() =>
+                    onPress={() => {
                         // console.log(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })))}
-                        createOrder(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })))}
+                        createOrder(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })));
+                        navigation.push('WaitingOrderScreen');
+                    }}
                 />
             </ScrollView>
         </View>

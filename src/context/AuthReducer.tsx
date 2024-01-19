@@ -11,8 +11,8 @@ export interface AuthState {
 type AuthAction =
     | { type: 'signIn', payload: { accessToken: string, user: Usuario } }
     | { type: 'signUp' }
-    | { type: 'addError', payload: string }
-    | { type: 'infoMessage', payload: string }
+    | { type: 'addError', payload: { info: string, error: string } }
+    | { type: 'infoMessage', payload: { info: string, error: string } }
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }
     | { type: 'logout' }
@@ -27,7 +27,8 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
                 user: null,
                 status: 'not-authenticated',
                 accessToken: null,
-                infoMessage: action.payload
+                errorMessage: action.payload.error,
+                infoMessage: action.payload.info
             }
         case 'removeError':
             return {
