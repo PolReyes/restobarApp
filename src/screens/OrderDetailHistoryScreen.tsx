@@ -3,25 +3,27 @@ import { FlatList, Text, View } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
 import OrderCard from '../components/orderCard';
 import { StackScreenProps } from '@react-navigation/stack';
+import ItemDetailCard from '../components/itemDetailCard';
 
 interface Props extends StackScreenProps<any, any> { }
 
-export const OrderHistoryScreen = ({ navigation }: Props) => {
+export const OrderDetailHistoryScreen = ({ navigation, route }: Props) => {
 
-    const { orders, getOrders } = useContext(OrderContext);
+    const { orderById, getOrderById } = useContext(OrderContext);
+    const { id = '' } = route.params as any;
 
     const ListRef = useRef<FlatList | null>(null);
 
     useEffect(() => {
-
-        getOrders()
+        console.log(id)
+        getOrderById(id)
         // loadEstimatedTime()
 
     }, [])
 
     return (
         <>
-            <Text>ORDER HISTORY</Text>
+            <Text>Detalle orden</Text>
             <FlatList
                 ref={ListRef}
                 horizontal
@@ -31,16 +33,15 @@ export const OrderHistoryScreen = ({ navigation }: Props) => {
                     </View>
                 }
                 showsHorizontalScrollIndicator={false}
-                data={orders}
+                data={orderById?.items || []}
                 contentContainerStyle={{ display: 'flex' }}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => {
                     return (
 
-                        <OrderCard
-                            order={item}
+                        <ItemDetailCard
+                            item={item}
                             key={item.id}
-                            navigation={navigation}
                         />
                     );
                 }}

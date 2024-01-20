@@ -23,6 +23,7 @@ interface Store {
     incrementCartItemQuantity: (id: string) => void;
     decrementCartItemQuantity: (id: string) => void;
     calculateCartPrice: () => void;
+    cleanCart: () => void;
 }
 
 
@@ -101,6 +102,13 @@ export const useStore = create<Store>()(
 
                         }
                     }),
+                ),
+            cleanCart: () =>
+                set(
+                    produce(state => {
+                        state.CartList = []
+                    }
+                    ),
                 ),
             addToOrderHistoryListFromCart: () =>
                 set(

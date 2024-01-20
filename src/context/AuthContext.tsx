@@ -3,14 +3,14 @@ import { LoginData, LoginResponse, Usuario, RegisterData, RegisterResponse } fro
 import { authReducer, AuthState } from './AuthReducer';
 import restoBarApi from "../api/restoBarApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios, { AxiosError } from 'axios';
 
 type AuthContextProps = {
     errorMessage: string;
-    infoMessage: string;
     accessToken: string | null;
     user: Usuario | null;
     status: 'checking' | 'authenticated' | 'not-authenticated';
-    signUp: (registerData: RegisterData) => void;
+    signUp: (registerData: RegisterData) => Promise<RegisterResponse | null>;
     signIn: (loginData: LoginData) => void;
     logOut: () => void;
     removeError: () => void;
@@ -22,7 +22,6 @@ const authInicialState: AuthState = {
     accessToken: null,
     user: null,
     errorMessage: '',
-    infoMessage: ''
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -77,36 +76,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             console.log(error.response.data.errors);
             dispatch({
                 type: 'addError',
-                payload: error.response.data.errors.toString() || 'Información incorrecta',
+                payload: error.response.data.errors[0] || 'Información incorrecta',
             })
         }
     };
 
     const signUp = async ({ first_name, last_name, second_last_name, email, password }: RegisterData) => {
         try {
-            const { data } = await restoBarApi.post<RegisterResponse>('/client/auth/register', { first_name, last_name, second_last_name, email, password });
-            dispatch({ type: 'signUp' })
-            //await AsyncStorage.setItem('token', resp.data.access_token)
-            dispatch({
-                type: 'infoMessage',
-                payload: {
-                    info: data.message.toString() || 'Usuario registrado correctamente',
-                    error: ''
-                }
-
-            })
-            console.log(data.message.toString(), 'desde el try')
-        } catch (error: any) {
-            //console.log(error.response.data.errors);
-            dispatch({
-                type: 'addError',
-                payload: {
-                    info: '',
-                    error: error.response.data.errors.toString() || 'Revise la información',
-                }
-
-            })
-            console.log(error.response.data.errors.toString(), 'desde el error')
+            const resp = await restoBarApi.post<RegisterResponse>('/client/auth/register', { first_name, last_name, second_last_name, email, password });
+            return resp.data;
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return error.response?.data
+            }
+            console.log(error)
+            return null;
         }
     };
     const logOut = async () => {
@@ -118,10 +102,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             //console.log(error.response.data.errors);
             dispatch({
                 type: 'addError',
-                payload: {
-                    info: '',
-                    error: 'Algo ocurrió al cerrar sesión',
-                }
+                payload: 'Algo ocurrió al cerrar sesión',
 
             })
         } finally {

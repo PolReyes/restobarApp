@@ -28,6 +28,7 @@ export interface RegisterResponse {
         user: Usuario;
     }
     message: string;
+    errors: string[];
 
 }
 
@@ -109,7 +110,7 @@ export interface DetailOrder {
 
 }
 
-export interface Order {
+export interface OrderCreate {
     reception: string;
     user_document_number: string;
     order_type: string;
@@ -118,9 +119,29 @@ export interface Order {
     items: DetailOrder[]
 }
 
+export interface Order {
+    reception_date: string;
+    order_number: string;
+    total: number;
+    payment_method: string;
+    order_type: string;
+    user_document_number: string;
+    client: Usuario;
+    reception: Reception;
+    order_channel: string;
+    tax: number;
+    status: 0 | 1 | 2 | 3;
+    subtotal: number;
+    id: string;
+    items: DetailOrder[];
+}
+
 export interface OrderResponse {
     status_code: number;
     docs: Order[];
+    data: { order: Order };
+    message: string,
+    errors: string[]
 }
 
 // Recepciones

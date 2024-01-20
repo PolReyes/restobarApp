@@ -1,5 +1,5 @@
 //import { createStackNavigator } from '@react-navigation/stack';
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { OrderHistoryScreen } from '../screens/OrderHistoryScreen';
 import { HomeScreen } from '../screens/HomeScreen';
@@ -10,6 +10,8 @@ import { BlurView } from '@react-native-community/blur';
 import CustomIcon from '../components/CustomIcon';
 import CartScreen from '../screens/CartScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
+import { StackScreenProps } from '@react-navigation/stack';
+import { OrderContext } from '../context/OrderContext';
 
 export type HomeStackParams = {
     Home: undefined;
@@ -20,10 +22,22 @@ export type HomeStackParams = {
 }
 
 // const Stack = createStackNavigator<ProductsStackParams>();
+interface Props extends StackScreenProps<any, any> { }
+
 const Tab = createBottomTabNavigator<HomeStackParams>();
 
-export const TabNavigator = () => {
+export const TabNavigator = ({ navigation }: Props) => {
+
+    const { orderDetail } = useContext(OrderContext)
+
+    useEffect(() => {
+        if (orderDetail) {
+            navigation.push('WaitingOrderScreen')
+        }
+    }, [orderDetail])
+
     return (
+
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,

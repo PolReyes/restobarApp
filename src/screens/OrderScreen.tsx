@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
 import { COLORS } from '../theme/Theme';
 import HeaderBar from '../components/HeaderBar';
@@ -7,10 +7,13 @@ import { Reception } from '../interfaces/appInterfaces';
 import { SelectCountry } from 'react-native-element-dropdown';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { useStore } from '../store/store';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const OrderScreen = ({ navigation }: any) => {
+interface Props extends StackScreenProps<any, any> { }
 
-    const CartList = useStore((state) => state.CartList);
+export const OrderScreen = ({ navigation }: Props) => {
+
+    const { cleanCart, CartList } = useStore();
     const { receptions, getReceptions, createOrder } = useContext(OrderContext);
     const [selectedReception, setselectedReception] = useState<Reception | null>(null);
     const [medioPago, setMedioPago] = useState('COMER EN LOCAL');
@@ -19,8 +22,6 @@ export const OrderScreen = ({ navigation }: any) => {
     // const [estimatedTime, setEstimatedTime] = useState([]);
 
     const [numDocumento, setNumDocumento] = useState('');
-
-
 
     /*async function loadEstimatedTime() {
 
@@ -37,6 +38,24 @@ export const OrderScreen = ({ navigation }: any) => {
         // loadEstimatedTime()
 
     }, [])
+
+    const getResponse = async () => {
+        const resp = await createOrder(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })));
+
+        if (resp?.status_code === 200) {
+            navigation.push('WaitingOrderScreen');
+            cleanCart();
+        }
+        else {
+            Alert.alert('Ups! Algo salió mal', ` ${resp?.errors[0] || 'Ocurrió algo inesperado'}`,
+                [
+                    {
+                        text: 'Ok',
+                        onPress: () => null
+                    }
+                ]);
+        }
+    }
 
 
     const tipo_orden = [
@@ -154,11 +173,7 @@ export const OrderScreen = ({ navigation }: any) => {
                 />
                 <Button
                     title='Revisar Pedido'
-                    onPress={() => {
-                        // console.log(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })))}
-                        createOrder(selectedReception?.id || '', numDocumento, tipoOrden, medioPago, CartList.map((data) => ({ product: data.id, quantity: data.quantity })));
-                        navigation.push('WaitingOrderScreen');
-                    }}
+                    onPress={getResponse}
                 />
             </ScrollView>
         </View>

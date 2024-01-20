@@ -21,10 +21,13 @@ import ImageBackgroundInfo from '../components/ImageBackgroundInfo';
 import { ProductsContext } from '../context/ProductsContext';
 import PaymentFooter from '../components/PaymentFooter';
 import { Producto, Categoria } from '../interfaces/appInterfaces';
+import { StackScreenProps } from '@react-navigation/stack';
 
-export const DetailsScreen = ({ navigation, route }: any) => {
+interface Props extends StackScreenProps<any, any> { }
 
-    const { id = '', categoryId = '', name = '' } = route.params;
+export const DetailsScreen = ({ navigation, route }: Props) => {
+
+    const { id = '', categoryId = '', name = '' } = route.params as any;
 
     const { loadProductsByCategory } = useContext(ProductsContext);
 

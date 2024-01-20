@@ -1,51 +1,96 @@
-import React, { useContext, useEffect } from 'react'
-import { Button, StatusBar, StyleSheet, Text, View } from 'react-native'
-import { AuthContext } from '../context/AuthContext'
+import React, { useContext, useEffect, useState } from 'react'
+import { BackHandler, Button, StatusBar, StyleSheet, Text, View } from 'react-native'
 import WaitingOrderAnimation from '../components/WaitingOrderAnimation';
 
 import { firebase } from '../firebase/config'
 import HeaderBar from '../components/HeaderBar';
 import { COLORS } from '../theme/Theme';
+import { OrderContext } from '../context/OrderContext';
+import Timer from '../components/Timer';
+import { StackScreenProps } from '@react-navigation/stack';
+import { useFocusEffect } from '@react-navigation/native';
 
-export const WaitingOrderScreen = () => {
 
-    //const { user, accessToken, logOut } = useContext(AuthContext);
-    //console.log(user)
+interface Props extends StackScreenProps<any, any> { }
+
+export const WaitingOrderScreen = ({ navigation }: Props) => {
+
+    const { orderDetail, cleanOrder } = useContext(OrderContext);
+    const [time, setTime] = useState(0);
 
     async function loadEstimatedTime() {
-        const resp = firebase.firestore()
+        firebase.firestore()
             .collection('orders')
-            .doc('spG0b49PaHyUXFF4GuJx')
+            .doc(orderDetail?.id)
             .onSnapshot(documentSnapshot => {
-                // console.log('User exists: ', documentSnapshot.exists);
+                // console.log(documentSnapshot);
 
-                if (documentSnapshot.exists) {
+                if (documentSnapshot.exists && documentSnapshot.get('estimated_time') && time === 0 && documentSnapshot.get('status') === 2) {
+                    const currentTime = new Date().getMinutes();
+                    const updateTime = documentSnapshot.get('updated_date');
+                    const estimatedTime = documentSnapshot.get('estimated_time');
+                    if (updateTime) {
+                        const castUpdateToDate = new Date(updateTime.seconds * 1000).getUTCMinutes();
+                        let resta = 0
+                        if (currentTime < castUpdateToDate) {
+                            resta = 60 - castUpdateToDate;
+                        }
+                        if (currentTime > castUpdateToDate) {
+                            resta = currentTime - castUpdateToDate;
+                        }
+                        if (resta < estimatedTime) {
+                            setTime((estimatedTime - resta) * 60 * 1000);
+                        }
 
-                    console.log(documentSnapshot.get('estimated_time'));
+                    }
+                    else {
+                        setTime(estimatedTime * 60 * 1000);
+                    }
+
                 }
             });
-        //const resp = firebase.firestore().collection('orders').onSnapshot(querySnapshot => {
-        // spG0b49PaHyUXFF4GuJx
-        // console.log("algo cambio")
-        // })
-        //return () => resp();
     }
 
+
+    const backAction = () => {
+        return true;
+    };
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                return true;
+            };
+
+            const subscription = BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+            return () => subscription.remove();
+        }, [])
+    );
+
     useEffect(() => {
+        if (orderDetail) {
+            loadEstimatedTime()
+        }
+    }, [orderDetail])
 
-        loadEstimatedTime()
 
-    }, [])
+
 
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
             <HeaderBar title="Pedidos" />
             <WaitingOrderAnimation title={'Estamos preparando su pedido'} />
+            {time > 0 ?
+                <Timer duration={time} /> :
+                null
+            }
 
             <Button
-                title="Pedido Recibido"
+                title="¡Recibí mi pedido!"
                 color="#5856D6"
+                onPress={() => { cleanOrder(); navigation.replace('TabNavigator') }}
             />
         </View>
     )

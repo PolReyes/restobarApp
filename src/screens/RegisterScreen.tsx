@@ -12,7 +12,7 @@ interface Props extends StackScreenProps<any, any> { }
 
 export const RegisterScreen = ({ navigation }: Props) => {
 
-    const { signUp, errorMessage, removeError, infoMessage } = useContext(AuthContext);
+    const { signUp, removeError } = useContext(AuthContext);
 
     const { firstName, lastName, secondLastName, email, password, onChange } = useForm({
         firstName: '',
@@ -22,43 +22,53 @@ export const RegisterScreen = ({ navigation }: Props) => {
         password: ''
     })
 
-    useEffect(() => {
-        if (errorMessage.length === 0) return;
-        Alert.alert('Registro incorrecto', errorMessage,
-            [
-                {
-                    text: 'Ok',
-                    onPress: removeError
-                }
-            ]);
-    }, [errorMessage])
-
-    useEffect(() => {
-        if (infoMessage.length === 0) return;
-        Alert.alert('Registro correcto', infoMessage,
-            [
-                {
-                    text: 'Ok',
-                    onPress:
-                        () => {
-                            navigation.push('LoginScreen');
-                            removeError
-                        }
-                }
-            ]);
-    }, [infoMessage])
-
-
-    const onRegister = () => {
+    const onRegister = async () => {
         console.log({ firstName, lastName, secondLastName, email, password })
         Keyboard.dismiss();
-        signUp({
-            first_name: firstName,
-            last_name: lastName,
-            second_last_name: secondLastName,
-            email: email,
-            password: password
-        })
+        try {
+            const response = await signUp({
+                first_name: firstName,
+                last_name: lastName,
+                second_last_name: secondLastName,
+                email: email,
+                password: password
+            })
+            console.log(response)
+            if (response?.status_code === 200) {
+                Alert.alert('Registro correcto', `El usuario ${response.data.user.email} se registro correctamente`,
+                    [
+                        {
+                            text: 'Ok',
+                            onPress:
+                                () => {
+                                    navigation.push('LoginScreen');
+                                    removeError
+                                }
+                        }
+                    ]);
+            }
+            else {
+                Alert.alert('Registro incocorrecto', `${response?.errors[0] || 'Ocurrió un error inesperado. Intente en unos minutos'}`,
+                    [
+                        {
+                            text: 'Ok',
+                            onPress: removeError
+                        }
+                    ]);
+
+            }
+
+        } catch (error) {
+
+            Alert.alert('Registro incorrecto', 'Ocurrió un error inesperado. Intente en unos minutos',
+                [
+                    {
+                        text: 'Ok',
+                        onPress: removeError
+                    }
+                ]);
+        }
+
     }
 
     return (

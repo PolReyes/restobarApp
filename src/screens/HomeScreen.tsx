@@ -10,6 +10,7 @@ import ProductCard from '../components/ProductCard';
 import { Producto } from '../interfaces/appInterfaces';
 import { useStore } from '../store/store';
 import { Background } from '../components/Background';
+import { StackScreenProps } from '@react-navigation/stack';
 
 
 
@@ -37,13 +38,14 @@ const getProductList = (category: string, data: any) => {
     }
 };
 
-export const HomeScreen = ({ navigation }: any) => {
+interface Props extends StackScreenProps<any, any> { }
+
+export const HomeScreen = ({ navigation }: Props) => {
 
     const { products, categories } = useContext(ProductsContext);
     // console.log(categories.map(category, index => (category.name)))
 
-    const addToCart = useStore((state: any) => state.addToCart);
-    const calculateCartPrice = useStore((state: any) => state.calculateCartPrice);
+    const addToCart = useStore((state) => state.addToCart);
 
     const [searchText, setSearchText] = useState('');
 

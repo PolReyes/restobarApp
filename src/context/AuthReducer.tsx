@@ -4,15 +4,13 @@ export interface AuthState {
     status: 'checking' | 'authenticated' | 'not-authenticated';
     accessToken: string | null;
     errorMessage: string;
-    infoMessage: string;
     user: Usuario | null;
 }
 
 type AuthAction =
     | { type: 'signIn', payload: { accessToken: string, user: Usuario } }
     | { type: 'signUp' }
-    | { type: 'addError', payload: { info: string, error: string } }
-    | { type: 'infoMessage', payload: { info: string, error: string } }
+    | { type: 'addError', payload: string }
     | { type: 'removeError' }
     | { type: 'notAuthenticated' }
     | { type: 'logout' }
@@ -20,21 +18,18 @@ type AuthAction =
 export const authReducer = (state: AuthState, action: AuthAction): AuthState => {
     switch (action.type) {
 
-        case 'infoMessage':
         case 'addError':
             return {
                 ...state,
                 user: null,
                 status: 'not-authenticated',
                 accessToken: null,
-                errorMessage: action.payload.error,
-                infoMessage: action.payload.info
+                errorMessage: action.payload,
             }
         case 'removeError':
             return {
                 ...state,
-                errorMessage: '',
-                infoMessage: ''
+                errorMessage: ''
             }
 
         case 'signIn':
