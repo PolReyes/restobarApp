@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Alert, Button, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { Alert, Button, Platform, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
-import { COLORS } from '../theme/Theme';
+import { COLORS, FONTFAMILY, FONTSIZE } from '../theme/Theme';
 import HeaderBar from '../components/HeaderBar';
 import { Reception } from '../interfaces/appInterfaces';
 import { SelectCountry } from 'react-native-element-dropdown';
@@ -63,14 +63,14 @@ export const OrderScreen = ({ navigation }: Props) => {
             value: 'COMER EN LOCAL',
             lable: 'Comer en local',
             image: {
-                uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/buena-resena.png?alt=media',
             },
         },
         {
             value: 'PARA LLEVAR',
             lable: 'Para llevar',
             image: {
-                uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/entrega-de-comida.png?alt=media',
             },
         }
         ,
@@ -81,21 +81,21 @@ export const OrderScreen = ({ navigation }: Props) => {
             value: 'AL CONTADO',
             lable: 'Al contado',
             image: {
-                uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/pago-en-efectivo.png?alt=media',
             },
         },
         {
             value: 'VISA',
             lable: 'Visa',
             image: {
-                uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/visa.png?alt=media',
             },
         },
         {
             value: 'MASTERCARD',
             lable: 'Mastercard',
             image: {
-                uri: 'https://www.vigcenter.com/public/all/images/default-image.jpg',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/tarjeta.png?alt=media',
             },
         }
         ,
@@ -106,64 +106,75 @@ export const OrderScreen = ({ navigation }: Props) => {
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
             <HeaderBar title="Pedidos" />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
+                <View style={styles.containerButton}>
+                    {
+                        receptions.map((item) => (
+                            <View style={styles.itemButton}>
+                                <Pressable style={styles.buttonTable} onPress={() => setselectedReception(item)} key={item.number_table}>
+                                    <Text style={styles.textButtonTable}>{item.number_table}</Text>
+                                </Pressable>
 
-                {
-                    receptions.map((item) => (
-                        <Button
-                            title={item.number_table}
-                            color="#5856D6"
-                            key={item.id}
-                            disabled={item.available === 0}
+                            </View>
 
-                            onPress={() => setselectedReception(item)} />
-                    ))
-                }
+                        ))
+                    }
+                </View>
 
-                <Text>{selectedReception ? `Has seleccionado la mesa ${selectedReception.number_table}` : "Seleciona una mesa"}</Text>
 
-                <SelectCountry
-                    style={styles.dropdown}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    imageStyle={styles.imageStyle}
-                    iconStyle={styles.iconStyle}
-                    maxHeight={200}
-                    value={tipoOrden}
-                    data={tipo_orden}
-                    valueField="value"
-                    labelField="lable"
-                    imageField="image"
-                    placeholder="Seleccione tipo de orden"
-                    searchPlaceholder="Search..."
-                    onChange={e => {
-                        setTipoOrden(e.value);
-                    }}
-                />
+                <Text style={styles.numberTableText}>{selectedReception ? `Has seleccionado la mesa ${selectedReception.number_table}` : "Seleciona una mesa"}</Text>
+                <View style={styles.containerDropdown}>
+                    <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+                        itemContainerStyle={styles.itemContainerStyle}
+                        activeColor={COLORS.primaryGreenHex}
+                        imageStyle={styles.imageStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        value={tipoOrden}
+                        data={tipo_orden}
+                        valueField="value"
+                        labelField="lable"
+                        imageField="image"
+                        placeholder="Seleccione tipo de orden"
+                        iconColor="#fff"
+                        onChange={e => {
+                            setTipoOrden(e.value);
+                        }}
+                    />
 
-                <SelectCountry
-                    style={styles.dropdown}
-                    selectedTextStyle={styles.selectedTextStyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    imageStyle={styles.imageStyle}
-                    iconStyle={styles.iconStyle}
-                    maxHeight={200}
-                    value={medioPago}
-                    data={metodo_pago}
-                    valueField="value"
-                    labelField="lable"
-                    imageField="image"
-                    placeholder="Seleccione método de pago"
-                    searchPlaceholder="Search..."
-                    onChange={e => {
-                        setMedioPago(e.value);
-                    }}
-                />
+                    <SelectCountry
+                        style={styles.dropdown}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        placeholderStyle={styles.placeholderStyle}
+                        itemContainerStyle={styles.itemContainerStyle}
+                        activeColor={COLORS.primaryGreenHex}
+                        imageStyle={styles.imageStyle}
+                        iconStyle={styles.iconStyle}
+                        maxHeight={200}
+                        value={medioPago}
+                        data={metodo_pago}
+                        valueField="value"
+                        labelField="lable"
+                        imageField="image"
+                        placeholder="Seleccione método de pago"
+                        iconColor="#fff"
+                        onChange={e => {
+                            setMedioPago(e.value);
+                        }}
+                    />
+                </View>
+
 
                 <TextInput
                     placeholder='Ingrese número de documento'
-                    placeholderTextColor="rgba(0,0,0,0.4)"
-                    underlineColorAndroid='black'
-
+                    placeholderTextColor="rgba(255,255,255,0.6)"
+                    style={[
+                        styles.inputField,
+                        (Platform.OS === 'ios') && styles.inputFieldIOS
+                    ]}
+                    keyboardType="numeric"
                     selectionColor='white'
                     value={numDocumento}
                     autoCorrect={false}
@@ -171,10 +182,10 @@ export const OrderScreen = ({ navigation }: Props) => {
                         setNumDocumento(e);
                     }}
                 />
-                <Button
-                    title='Revisar Pedido'
-                    onPress={getResponse}
-                />
+                <Pressable style={styles.buttonGenerateOrder} onPress={getResponse}>
+                    <Text style={styles.textButtonTable}>Realizar Pedido</Text>
+                </Pressable>
+
             </ScrollView>
         </View>
     )
@@ -188,13 +199,21 @@ const styles = StyleSheet.create({
     ScrollViewFlex: {
         flexGrow: 1,
     },
+    containerDropdown: {
+        flexDirection: 'column',
+        display: 'flex',
+        justifyContent: 'center'
+    },
     dropdown: {
         margin: 16,
-        height: 50,
-        width: 250,
-        backgroundColor: '#EEEEEE',
-        borderRadius: 22,
-        paddingHorizontal: 8,
+        height: 40,
+        width: '90%',
+        backgroundColor: COLORS.primaryGreenHex,
+        borderRadius: 10,
+        paddingHorizontal: 6,
+    },
+    itemContainerStyle: {
+        backgroundColor: COLORS.primaryGreenHex
     },
     imageStyle: {
         width: 24,
@@ -202,14 +221,91 @@ const styles = StyleSheet.create({
         borderRadius: 12,
     },
     placeholderStyle: {
-        fontSize: 16,
+        fontSize: FONTSIZE.size_20,
+        fontFamily: FONTFAMILY.poppins_semibold,
+        textAlign: 'center',
+        color: COLORS.primaryWhiteHex,
     },
     selectedTextStyle: {
-        fontSize: 16,
         marginLeft: 8,
+        fontSize: FONTSIZE.size_20,
+        fontFamily: FONTFAMILY.poppins_semibold,
+        color: COLORS.primaryWhiteHex
     },
     iconStyle: {
         width: 20,
         height: 20,
+    },
+    itemButton: {
+        width: 100,
+        margin: 10,
+    }
+    ,
+    containerButton: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around'
+    },
+    numberTableText: {
+        fontSize: FONTSIZE.size_20,
+        fontFamily: FONTFAMILY.poppins_semibold,
+        textAlign: 'center',
+        backgroundColor: COLORS.primaryGreenHex,
+        color: COLORS.primaryWhiteHex,
+        margin: 16,
+        borderRadius: 10,
+        height: 40,
+        justifyContent: 'center',
+        padding: 5,
+        width: '90%'
+    },
+    buttonTable: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 10,
+        elevation: 4,
+        backgroundColor: COLORS.primaryOrangeHex,
+    },
+    buttonGenerateOrder: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 10,
+        elevation: 4,
+        backgroundColor: COLORS.primaryOrangeHex,
+        width: '90%',
+        margin: 16
+    },
+    textButtonTable: {
+        fontSize: FONTSIZE.size_18,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
+    inputField: {
+        color: '#fff',
+        fontSize: FONTSIZE.size_20,
+        backgroundColor: COLORS.primaryGreenHex,
+        borderRadius: 10,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingLeft: 10,
+        paddingRight: 10,
+        marginBottom: 20,
+        fontFamily: FONTFAMILY.poppins_regular,
+        borderColor: '#c2c2cb',
+        borderWidth: 1,
+        width: '90%',
+        margin: 16
+    },
+    inputFieldIOS: {
+        borderBottomColor: '#000',
+        borderBottomWidth: 2,
+        paddingBottom: 4
     },
 })

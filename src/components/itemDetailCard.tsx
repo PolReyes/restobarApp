@@ -8,6 +8,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    Image
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {
@@ -53,11 +54,15 @@ const ItemDetailCard: React.FC<ProductCardProps> = ({
 
             </TouchableOpacity>
 
-            <Text style={styles.CardTitle}>{item.id}</Text>
-            <Text style={styles.CardTitle}>{item.price_of_sale}</Text>
-            <Text style={styles.CardTitle}>{item.quantity}</Text>
+            <Text style={styles.CardTitle}>Detalle de Pedido</Text>
+            <Text style={styles.CardTitle}>Precio: S/. {item.price_of_sale}</Text>
+            <Text style={styles.CardTitle}>Cantidad: {item.quantity}</Text>
             <Text style={styles.CardTitle}>{item.product.name}</Text>
 
+            <Image
+                source={{ uri: item.product.image }}
+                style={styles.CartItemSingleImage}
+            />
 
         </LinearGradient>
     );
@@ -67,7 +72,8 @@ const styles = StyleSheet.create({
     CardLinearGradientContainer: {
         padding: SPACING.space_15,
         borderRadius: BORDERRADIUS.radius_25,
-        elevation: 5
+        elevation: 5,
+        margin: 10
     },
     CardImageBG: {
         width: CARD_WIDTH,
@@ -120,6 +126,11 @@ const styles = StyleSheet.create({
     CardPrice: {
         color: COLORS.primaryOrangeHex,
     },
+    CartItemSingleImage: {
+        height: 150,
+        width: 150,
+        borderRadius: BORDERRADIUS.radius_20,
+    }
 });
 
 export default ItemDetailCard;

@@ -3,7 +3,7 @@ import { FlatList, Text, View } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
 import OrderCard from '../components/orderCard';
 import { StackScreenProps } from '@react-navigation/stack';
-import ItemDetailCard from '../components/itemDetailCard';
+import ItemDetailCard from '../components/ItemDetailCard';
 
 interface Props extends StackScreenProps<any, any> { }
 
@@ -15,7 +15,7 @@ export const OrderDetailHistoryScreen = ({ navigation, route }: Props) => {
     const ListRef = useRef<FlatList | null>(null);
 
     useEffect(() => {
-        console.log(id)
+        //console.log(id)
         getOrderById(id)
         // loadEstimatedTime()
 
@@ -23,10 +23,8 @@ export const OrderDetailHistoryScreen = ({ navigation, route }: Props) => {
 
     return (
         <>
-            <Text>Detalle orden</Text>
             <FlatList
                 ref={ListRef}
-                horizontal
                 ListEmptyComponent={
                     <View >
                         <Text>No tienes pedidos</Text>

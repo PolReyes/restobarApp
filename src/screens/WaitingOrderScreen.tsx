@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { BackHandler, Button, StatusBar, StyleSheet, Text, View } from 'react-native'
+import { BackHandler, Button, Pressable, StatusBar, StyleSheet, Text, View } from 'react-native'
 import WaitingOrderAnimation from '../components/WaitingOrderAnimation';
 
 import { firebase } from '../firebase/config'
 import HeaderBar from '../components/HeaderBar';
-import { COLORS } from '../theme/Theme';
+import { COLORS, FONTSIZE } from '../theme/Theme';
 import { OrderContext } from '../context/OrderContext';
 import Timer from '../components/Timer';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -46,7 +46,7 @@ export const WaitingOrderScreen = ({ navigation }: Props) => {
                     else {
                         setTime(estimatedTime * 60 * 1000);
                     }
-
+                    console.log(time)
                 }
             });
     }
@@ -87,11 +87,9 @@ export const WaitingOrderScreen = ({ navigation }: Props) => {
                 null
             }
 
-            <Button
-                title="¡Recibí mi pedido!"
-                color="#5856D6"
-                onPress={() => { cleanOrder(); navigation.replace('TabNavigator') }}
-            />
+            <Pressable style={styles.buttonGenerateOrder} onPress={() => { cleanOrder(); navigation.replace('TabNavigator') }}>
+                <Text style={styles.textButtonTable}>¡Recibí mi pedido!</Text>
+            </Pressable>
         </View>
     )
 }
@@ -103,5 +101,23 @@ const styles = StyleSheet.create({
     },
     ScrollViewFlex: {
         flexGrow: 1,
-    }
+    },
+    buttonGenerateOrder: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 10,
+        elevation: 4,
+        backgroundColor: COLORS.primaryOrangeHex,
+        width: '90%',
+        margin: 16
+    },
+    textButtonTable: {
+        fontSize: FONTSIZE.size_18,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
 })

@@ -4,6 +4,7 @@ import {
     Dimensions,
     ImageBackground,
     ImageProps,
+    Pressable,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -43,22 +44,23 @@ const OrderCard: React.FC<ProductCardProps> = ({
             style={styles.CardLinearGradientContainer}
             colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}>
 
-            <Text style={styles.CardTitle}>{order.order_number}</Text>
+            <Text style={styles.CardTitle}>N° Pedido: {order.order_number}</Text>
+            <Text style={styles.CardTitle}>Fecha/Hora de recepción: {(order.reception_date).substring(0, 10)} {(order.reception_date).substring(11, 19)}</Text>
+            <Text style={styles.CardTitle}>N° documento: {order.user_document_number}</Text>
             {/** <Text numberOfLines={3} style={styles.CardSubtitle}>{description}</Text>*/}
             <View style={styles.CardFooterRow}>
                 <Text style={styles.CardPriceCurrency}>
-                    S/. <Text style={styles.CardPrice}>{order.total}</Text>
+                    Total: S/. <Text style={styles.CardPrice}>{order.total}</Text>
                 </Text>
             </View>
-            <Button
-                onPress={() => {
-                    navigation.push('OrderDetailHistoryScreen', {
-                        id: order.id,
-                        //categoryId: navigation.item.category.id,
-                    });
-                }}
-                title='Ver detalle'
-            />
+            <Pressable style={styles.buttonGenerateOrder} onPress={() => {
+                navigation.push('OrderDetailHistoryScreen', {
+                    id: order.id,
+                    //categoryId: navigation.item.category.id,
+                });
+            }}>
+                <Text style={styles.textButtonTable}>Ver Detalle</Text>
+            </Pressable>
         </LinearGradient>
     );
 };
@@ -67,7 +69,8 @@ const styles = StyleSheet.create({
     CardLinearGradientContainer: {
         padding: SPACING.space_15,
         borderRadius: BORDERRADIUS.radius_25,
-        elevation: 5
+        elevation: 5,
+        margin: 10
     },
     CardImageBG: {
         width: CARD_WIDTH,
@@ -107,10 +110,10 @@ const styles = StyleSheet.create({
         fontSize: FONTSIZE.size_10,
     },
     CardFooterRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: SPACING.space_15,
+        // flexDirection: 'row',
+        // justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        margin: SPACING.space_15,
     },
     CardPriceCurrency: {
         fontFamily: FONTFAMILY.poppins_semibold,
@@ -120,6 +123,24 @@ const styles = StyleSheet.create({
     CardPrice: {
         color: COLORS.primaryOrangeHex,
     },
+
+    buttonGenerateOrder: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 10,
+        elevation: 4,
+        backgroundColor: COLORS.primaryOrangeHex,
+        margin: 10
+    },
+    textButtonTable: {
+        fontSize: FONTSIZE.size_18,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white'
+    }
 });
 
 export default OrderCard;
