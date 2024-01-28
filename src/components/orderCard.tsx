@@ -56,6 +56,7 @@ const OrderCard: React.FC<ProductCardProps> = ({
             <Pressable style={styles.buttonGenerateOrder} onPress={() => {
                 navigation.push('OrderDetailHistoryScreen', {
                     id: order.id,
+                    order: order,
                     //categoryId: navigation.item.category.id,
                 });
             }}>

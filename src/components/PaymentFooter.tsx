@@ -39,7 +39,7 @@ const PaymentFooter: React.FC<PaymentFooterProps> = ({
             <View style={styles.PriceContainer}>
                 <Text style={styles.PriceTitle}>Precio</Text>
                 <Text style={styles.PriceText}>
-                    {'S/. '}<Text style={styles.Price}>{isDetail ? price : CartPrice * 1.08}</Text>
+                    {'S/. '}<Text style={styles.Price}>{isDetail ? price : (CartPrice * 1.08).toFixed(2)}</Text>
                 </Text>
             </View>
             <TouchableOpacity

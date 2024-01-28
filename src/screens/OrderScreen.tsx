@@ -104,13 +104,15 @@ export const OrderScreen = ({ navigation }: Props) => {
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-            <HeaderBar title="Pedidos" />
+            <HeaderBar
+                navigation={navigation}
+                title="Pedidos" />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
                 <View style={styles.containerButton}>
                     {
                         receptions.map((item) => (
                             <View style={styles.itemButton}>
-                                <Pressable style={styles.buttonTable} onPress={() => setselectedReception(item)} key={item.number_table}>
+                                <Pressable style={item.available === 1 ? styles.buttonTable : styles.buttonTableOff} onPress={() => setselectedReception(item)} key={item.id} disabled={item.available === 0 ? true : false}>
                                     <Text style={styles.textButtonTable}>{item.number_table}</Text>
                                 </Pressable>
 
@@ -269,6 +271,15 @@ const styles = StyleSheet.create({
         elevation: 4,
         backgroundColor: COLORS.primaryOrangeHex,
     },
+    buttonTableOff: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 12,
+        paddingHorizontal: 32,
+        borderRadius: 10,
+        elevation: 4,
+        backgroundColor: COLORS.primaryLightGreyHex,
+    },
     buttonGenerateOrder: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -289,7 +300,7 @@ const styles = StyleSheet.create({
     },
     inputField: {
         color: '#fff',
-        fontSize: FONTSIZE.size_20,
+        fontSize: FONTSIZE.size_18,
         backgroundColor: COLORS.primaryGreenHex,
         borderRadius: 10,
         paddingTop: 8,

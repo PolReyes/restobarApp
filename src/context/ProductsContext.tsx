@@ -23,7 +23,7 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
     const [categories, setCategories] = useState<string[]>([]);
 
     const loadProducts = async () => {
-        const resp = await restoBarApi.post<ProductResponse>('/client/product/list', { limit: 10, offset: 0 });
+        const resp = await restoBarApi.post<ProductResponse>('/client/product/list', { limit: 200, offset: 0 });
         setProducts([...resp.data.docs])
     };
     const loadCategories = async () => {

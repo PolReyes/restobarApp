@@ -12,22 +12,6 @@ import { useStore } from '../store/store';
 import { Background } from '../components/Background';
 import { StackScreenProps } from '@react-navigation/stack';
 
-
-
-/*const getCategoriesFromData = (data: any) => {
-    let temp: any = {};
-    for (let i = 0; i < data.length; i++) {
-        if (temp[data[i].name] == undefined) {
-            temp[data[i].name] = 1;
-        } else {
-            temp[data[i].name]++;
-        }
-    }
-    let categories = Object.keys(temp);
-    categories.unshift('Todo');
-    return categories;
-};*/
-
 const getProductList = (category: string, data: any) => {
     if (category == 'Todos') {
         return data;
@@ -133,7 +117,9 @@ export const HomeScreen = ({ navigation }: Props) => {
 
                 <StatusBar backgroundColor={COLORS.primaryBlackHex} />
                 {/* APP Header*/}
-                <HeaderBar title={'Tres Escobas'} />
+                <HeaderBar
+                    navigation={navigation}
+                    title={'Tres Escobas'} />
 
                 <Text style={styles.ScreenTitle}>
                     Disfruta las mejores {'\n'}bebidas y platillos

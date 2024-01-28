@@ -14,7 +14,7 @@ interface FavoritesItemCardProps {
     id: string;
     imagelink: string;
     name: string;
-    //special_ingredient: string;
+    category: string;
     //type: string;
     //ingredients: string;
     //average_rating: number;
@@ -30,7 +30,7 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
     id,
     imagelink,
     name,
-    //special_ingredient,
+    category,
     //type,
     //ingredients,
     //average_rating,
@@ -51,7 +51,7 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
                 favourite={favourite}
                 name={name}
                 description={description}
-                //special_ingredient={special_ingredient}
+                category={category}
                 //ingredients={ingredients}
                 //average_rating={average_rating}
                 //ratings_count={ratings_count}
@@ -63,7 +63,7 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
                 end={{ x: 1, y: 1 }}
                 colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}
                 style={styles.ContainerLinearGradient}>
-                <Text style={styles.DescriptionTitle}>Description</Text>
+                <Text style={styles.DescriptionTitle}>Descripción</Text>
                 <Text style={styles.DescriptionText}>{description}</Text>
             </LinearGradient>
         </View>

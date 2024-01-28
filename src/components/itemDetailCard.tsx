@@ -22,7 +22,7 @@ import CustomIcon from './CustomIcon';
 import BGIcon from './BGIcon';
 import { DetailOrder, Order } from '../interfaces/appInterfaces';
 
-const CARD_WIDTH = Dimensions.get('window').width * 0.32;
+//const CARD_WIDTH = Dimensions.get('window').width * 0.08;
 
 interface ProductCardProps {
     //navigation: any;
@@ -44,25 +44,28 @@ const ItemDetailCard: React.FC<ProductCardProps> = ({
             end={{ x: 1, y: 1 }}
             style={styles.CardLinearGradientContainer}
             colors={[COLORS.primaryWhiteHex, COLORS.primaryWhiteHex]}>
-            <TouchableOpacity
-                onPress={() => {
-                    // navigation.push('DetailsOrder', {
-                    //  id: order.id,
-                    //categoryId: navigation.item.category.id,
-                    // });
-                }}>
+            <View style={styles.CardContainer}>
+                <View>
+                    <Text style={styles.CardTitle}>{item.product.name}</Text>
+                    <Text style={styles.CardTitle}>Cantidad: {item.quantity}</Text>
+                    <Text style={styles.CardTitle}>Precio:
+                        <Text style={styles.CardSubtitle}>
+                            {' '}S/. {item.price_of_sale}
+                        </Text>
+                    </Text>
 
-            </TouchableOpacity>
 
-            <Text style={styles.CardTitle}>Detalle de Pedido</Text>
-            <Text style={styles.CardTitle}>Precio: S/. {item.price_of_sale}</Text>
-            <Text style={styles.CardTitle}>Cantidad: {item.quantity}</Text>
-            <Text style={styles.CardTitle}>{item.product.name}</Text>
+                </View>
 
-            <Image
-                source={{ uri: item.product.image }}
-                style={styles.CartItemSingleImage}
-            />
+                <Image
+                    source={{ uri: item.product.image }}
+                    style={styles.CartItemSingleImage}
+                />
+            </View>
+
+
+
+
 
         </LinearGradient>
     );
@@ -73,50 +76,30 @@ const styles = StyleSheet.create({
         padding: SPACING.space_15,
         borderRadius: BORDERRADIUS.radius_25,
         elevation: 5,
-        margin: 10
+        margin: 5
+    },
+    CardContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     CardImageBG: {
-        width: CARD_WIDTH,
-        height: CARD_WIDTH,
+        width: 150,
+        height: 150,
         borderRadius: BORDERRADIUS.radius_20,
         marginBottom: SPACING.space_15,
         overflow: 'hidden',
     },
-    CardRatingContainer: {
-        flexDirection: 'row',
-        backgroundColor: COLORS.primaryBlackRGBA,
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: SPACING.space_10,
-        paddingHorizontal: SPACING.space_15,
-        position: 'absolute',
-        borderBottomLeftRadius: BORDERRADIUS.radius_20,
-        borderTopRightRadius: BORDERRADIUS.radius_20,
-        top: 0,
-        right: 0,
-    },
-    CardRatingText: {
-        fontFamily: FONTFAMILY.poppins_medium,
-        color: COLORS.primaryWhiteHex,
-        lineHeight: 22,
-        fontSize: FONTSIZE.size_14,
-    },
     CardTitle: {
-        fontFamily: FONTFAMILY.poppins_medium,
+        fontFamily: FONTFAMILY.poppins_bold,
         color: COLORS.primaryBlackHex,
-        fontSize: FONTSIZE.size_16,
+        fontSize: FONTSIZE.size_18,
         textTransform: 'capitalize'
     },
     CardSubtitle: {
-        fontFamily: FONTFAMILY.poppins_light,
-        color: COLORS.primaryBlackHex,
-        fontSize: FONTSIZE.size_10,
-    },
-    CardFooterRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: SPACING.space_15,
+        fontFamily: FONTFAMILY.poppins_bold,
+        color: COLORS.primaryOrangeHex,
+        fontSize: FONTSIZE.size_18,
     },
     CardPriceCurrency: {
         fontFamily: FONTFAMILY.poppins_semibold,
@@ -127,8 +110,8 @@ const styles = StyleSheet.create({
         color: COLORS.primaryOrangeHex,
     },
     CartItemSingleImage: {
-        height: 150,
-        width: 150,
+        height: 100,
+        width: 100,
         borderRadius: BORDERRADIUS.radius_20,
     }
 });

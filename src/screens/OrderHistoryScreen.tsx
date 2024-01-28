@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { FlatList, StatusBar, StyleSheet, Text, View } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
-import OrderCard from '../components/orderCard';
+import OrderCard from '../components/OrderCard';
 import { StackScreenProps } from '@react-navigation/stack';
 import HeaderBar from '../components/HeaderBar';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -26,31 +26,31 @@ export const OrderHistoryScreen = ({ navigation }: Props) => {
         <>
             <View style={styles.ScreenContainer}>
                 <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-                <HeaderBar title="Historial de Pedidos" />
-                <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.ScrollViewFlex}>
-                    <FlatList
-                        ref={ListRef}
-                        ListEmptyComponent={
-                            <View >
-                                <Text>No tienes pedidos</Text>
-                            </View>
-                        }
-                        showsHorizontalScrollIndicator={false}
-                        data={orders}
-                        contentContainerStyle={{ display: 'flex' }}
-                        keyExtractor={item => item.id}
-                        renderItem={({ item }) => {
-                            return (
+                <HeaderBar
+                    navigation={navigation}
+                    title="Historial de Pedidos" />
+                <FlatList
+                    ref={ListRef}
+                    ListEmptyComponent={
+                        <View >
+                            <Text>No tienes pedidos</Text>
+                        </View>
+                    }
+                    showsVerticalScrollIndicator={false}
+                    data={orders}
+                    contentContainerStyle={{ display: 'flex' }}
+                    keyExtractor={item => item.id}
+                    renderItem={({ item }) => {
+                        return (
 
-                                <OrderCard
-                                    order={item}
-                                    key={item.id}
-                                    navigation={navigation}
-                                />
-                            );
-                        }}
-                    />
-                </ScrollView>
+                            <OrderCard
+                                order={item}
+                                key={item.id}
+                                navigation={navigation}
+                            />
+                        );
+                    }}
+                />
             </View>
         </>
 
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     ScreenContainer: {
         flex: 1,
         backgroundColor: COLORS.primaryWhiteHex,
+        marginBottom: 80
     },
     ScrollViewFlex: {
         flexGrow: 1,

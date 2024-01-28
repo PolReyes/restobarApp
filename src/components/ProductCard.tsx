@@ -34,7 +34,7 @@ interface ProductCardProps {
 }
 
 const getImage = (img: string) => {
-    let imgDefault = 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/logo-sin-bg-lite.png?alt=media';
+    let imgDefault = 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/logo-v2.png?alt=media';
 
     if (img != '') {
         return img;
@@ -84,7 +84,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
             </TouchableOpacity>
 
-            <Text style={styles.CardTitle}>{name.length <= 15 ? name : name.substring(0, 15).concat('...')}</Text>
+            {/**<Text style={styles.CardTitle}>{name.length <= 13 ? name : name.substring(0, 13).concat('...')}</Text>**/}
+            <Text style={styles.CardTitle} numberOfLines={2}>{name}</Text>
             {/** <Text numberOfLines={3} style={styles.CardSubtitle}>{description}</Text>*/}
             <View style={styles.CardFooterRow}>
                 <Text style={styles.CardPriceCurrency}>
@@ -108,7 +109,8 @@ const styles = StyleSheet.create({
     CardLinearGradientContainer: {
         padding: SPACING.space_15,
         borderRadius: BORDERRADIUS.radius_25,
-        elevation: 5
+        elevation: 5,
+        width: 162,
     },
     CardImageBG: {
         width: CARD_WIDTH,
@@ -150,8 +152,13 @@ const styles = StyleSheet.create({
     CardFooterRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        marginTop: SPACING.space_15,
+        alignItems: 'flex-end',
+        // alignContent: 'flex-end',
+        //alignSelf: 'flex-end',
+        // marginTop: SPACING.space_15,
+        marginTop: 10,
+        marginBottom: 0,
+        flex: 1
     },
     CardPriceCurrency: {
         fontFamily: FONTFAMILY.poppins_semibold,

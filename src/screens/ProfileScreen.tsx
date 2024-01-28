@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import { AuthContext } from '../context/AuthContext'
 
-export const DetailOrderScreen = () => {
+export const ProfileScreen = () => {
 
     const { user, accessToken, logOut } = useContext(AuthContext);
     console.log(user)
@@ -14,6 +14,7 @@ export const DetailOrderScreen = () => {
             <Button
                 title="logout"
                 color="#5856D6"
+                onPress={logOut}
             />
         </View>
     )

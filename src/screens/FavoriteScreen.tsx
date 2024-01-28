@@ -26,7 +26,7 @@ const FavoriteScreen = ({ navigation }: any) => {
         FavoritesList.some(({ id }) => id === producto.id) ? deleteFromFavoriteList(producto) : addToFavoriteList(producto);
     };
 
-    console.log(FavoritesList, 'Desde favoriteScreen')
+    // console.log(FavoritesList, 'Desde favoriteScreen')
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
@@ -37,7 +37,7 @@ const FavoriteScreen = ({ navigation }: any) => {
                 <View
                     style={[styles.ScrollViewInnerView, { marginBottom: tabBarHeight }]}>
                     <View style={styles.ItemContainer}>
-                        <HeaderBar title="Favoritos" />
+                        <HeaderBar navigation={navigation} title="Favoritos" />
 
                         {FavoritesList.length == 0 ? (
                             <EmptyListAnimation title={'No se agregaron favoritos'} />
@@ -57,7 +57,7 @@ const FavoriteScreen = ({ navigation }: any) => {
                                             id={data.id}
                                             imagelink={data.imagelink}
                                             name={data.name}
-                                            //special_ingredient={data.special_ingredient}
+                                            category={data.category}
                                             //type={data.type}
                                             //ingredients={data.ingredients}
                                             //average_rating={data.average_rating}

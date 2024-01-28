@@ -103,7 +103,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
     }
 
     const getImage = (img: string) => {
-        let imgDefault = 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/logo-sin-bg-lite.png?alt=media';
+        let imgDefault = 'https://firebasestorage.googleapis.com/v0/b/restobar-admin.appspot.com/o/logo-v2.png?alt=media';
 
         if (img != '') {
             return img;
@@ -131,7 +131,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                     favourite={FavoritesList.some(({ id: productId }) => productId === id)}
                     name={ItemOfIndex.name}
                     description={ItemOfIndex.description}
-                    //ingredients={ItemOfIndex.ingredients}
+                    category={ItemOfIndex.category.name}
                     //average_rating={ItemOfIndex.average_rating}
                     //ratings_count={ItemOfIndex.ratings_count}
                     //roasted={ItemOfIndex.roasted}
@@ -140,7 +140,7 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
                     ToggleFavourite={ToggleFavourite}
                 />
                 <View style={styles.FooterInfoArea}>
-                    <Text style={styles.InfoTitle}>Description</Text>
+                    <Text style={styles.InfoTitle}>Descripción</Text>
                     {fullDesc ? (
                         <TouchableWithoutFeedback
                             onPress={() => {

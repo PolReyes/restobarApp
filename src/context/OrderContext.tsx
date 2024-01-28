@@ -95,7 +95,7 @@ export const OrderProvider = ({ children }: { children: React.ReactNode }) => {
         const resp = await restoBarApi.post<OrderResponse>('/client/order/get', { id: id });
         if (resp.data.status_code === 200) {
             setOrderById(resp.data.data.order || null)
-            console.log(resp.data.data.order.items, 'desde context')
+            //console.log(resp.data.data.order.items, 'desde context')
         }
     }
 
