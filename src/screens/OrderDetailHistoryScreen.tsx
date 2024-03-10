@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View, ScrollView } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
 import OrderCard from '../components/OrderCard';
 import { StackScreenProps } from '@react-navigation/stack';
-import ItemDetailCard from '../components/ItemDetailCard';
+import ItemDetailCard from '../components/sadsad';
 import { COLORS, FONTFAMILY, FONTSIZE } from '../theme/Theme';
 import { Order } from '../interfaces/appInterfaces';
 
