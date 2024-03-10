@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { FlatList, StyleSheet, Text, View, ScrollView } from 'react-native'
 import { OrderContext } from '../context/OrderContext';
-import OrderCard from '../components/OrderCard';
+import OrderCard from '../components/dsfdsfds';
 import { StackScreenProps } from '@react-navigation/stack';
-import ItemDetailCard from '../components/sadsad';
+import ItemDetailCard from '../components/ItemDetailCard';
 import { COLORS, FONTFAMILY, FONTSIZE } from '../theme/Theme';
 import { Order } from '../interfaces/appInterfaces';
 
