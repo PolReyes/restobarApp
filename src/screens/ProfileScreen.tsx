@@ -6,7 +6,7 @@ import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/Th
 export const ProfileScreen = () => {
 
     const { user, accessToken, logOut } = useContext(AuthContext);
-    console.log(user)
+    //console.log(user)
 
     return (
         <>

@@ -80,7 +80,7 @@ export const WaitingOrderScreen = ({ navigation }: Props) => {
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />
-            <HeaderBar title="Pedidos" />
+            <HeaderBar title="Pedidos" navigation={navigation} />
             <WaitingOrderAnimation title={'Estamos preparando su pedido'} />
             {time > 0 ?
                 <Timer duration={time} /> :
@@ -105,13 +105,16 @@ const styles = StyleSheet.create({
     buttonGenerateOrder: {
         alignItems: 'center',
         justifyContent: 'center',
+        display: 'flex',
         paddingVertical: 12,
         paddingHorizontal: 32,
         borderRadius: 10,
         elevation: 4,
         backgroundColor: COLORS.primaryOrangeHex,
-        width: '90%',
-        margin: 16
+        width: 'auto',
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 15
     },
     textButtonTable: {
         fontSize: FONTSIZE.size_18,

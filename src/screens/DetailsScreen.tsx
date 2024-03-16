@@ -117,7 +117,6 @@ export const DetailsScreen = ({ navigation, route }: Props) => {
         loadProduct();
     }, [])
 
-    console.log(ItemOfIndex)
     return (
         <View style={styles.ScreenContainer}>
             <StatusBar backgroundColor={COLORS.primaryBlackHex} />

@@ -201,6 +201,7 @@ const styles = StyleSheet.create({
         fontFamily: FONTFAMILY.poppins_semibold,
         fontSize: FONTSIZE.size_24,
         color: COLORS.primaryWhiteHex,
+        textTransform: 'capitalize',
     },
     ItemSubtitleText: {
         fontFamily: FONTFAMILY.poppins_medium,
