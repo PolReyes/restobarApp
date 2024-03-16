@@ -29,8 +29,6 @@ export const ProductsProvider = ({ children }: { children: React.ReactNode }) =>
     const loadCategories = async () => {
         const resp = await restoBarApi.post<CategoryResponse>('/client/category/list');
         setCategories(['Todos', ...resp.data.docs.map(category => (category.name))]);
-
-
     };
     //getPRoductById
     const loadProductsByCategory = async (id: string): Promise<Productos> => {

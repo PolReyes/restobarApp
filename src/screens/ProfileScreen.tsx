@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import { AuthContext } from '../context/AuthContext'
+import { BORDERRADIUS, COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/Theme';
 
 export const ProfileScreen = () => {
 
@@ -8,15 +9,22 @@ export const ProfileScreen = () => {
     console.log(user)
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Perfil</Text>
+        <>
+            <View style={styles.container}>
+                <Text style={styles.title}>Perfil</Text>
+                <Text style={styles.text}>Nombre: {user?.first_name} {user?.last_name}</Text>
+                <Text style={styles.text}>email: {user?.email} </Text>
 
+
+
+            </View>
             <Button
-                title="logout"
+                title="Cerrar Sesión"
                 color="#5856D6"
                 onPress={logOut}
             />
-        </View>
+
+        </>
     )
 }
 
@@ -25,10 +33,15 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'black'
+        backgroundColor: COLORS.primaryWhiteRGBA
     },
     title: {
-        fontSize: 20,
+        fontSize: FONTSIZE.size_24,
+        fontFamily: FONTFAMILY.poppins_medium,
         marginBottom: 20
+    },
+    text: {
+        fontSize: FONTSIZE.size_20,
+        fontFamily: FONTFAMILY.poppins_regular
     }
 })

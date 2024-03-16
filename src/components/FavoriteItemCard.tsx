@@ -40,7 +40,10 @@ const FavoritesItemCard: React.FC<FavoritesItemCardProps> = ({
     favourite,
     TogglePressHandler,
     ToggleFavouriteItem,
+
+
 }) => {
+    //console.log(description, imagelink)
     return (
         <View style={styles.CardContainer}>
             <ImageBackgroundInfo
@@ -74,7 +77,8 @@ const styles = StyleSheet.create({
     CardContainer: {
         borderRadius: BORDERRADIUS.radius_25,
         overflow: 'hidden',
-        elevation: 5
+        elevation: 5,
+        marginBottom: 10
     },
     ContainerLinearGradient: {
         gap: SPACING.space_10,
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     DescriptionText: {
         fontFamily: FONTFAMILY.poppins_regular,
         fontSize: FONTSIZE.size_14,
-        color: COLORS.primaryWhiteHex,
+        color: COLORS.primaryGreyHex,
     },
 });
 

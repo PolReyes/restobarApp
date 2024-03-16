@@ -44,7 +44,6 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
     name,
     description,
     category,
-    //ingredients,
     //average_rating,
     //ratings_count,
     //roasted,
@@ -79,7 +78,9 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
                                     id,
                                     favourite,
                                     name,
-                                    imagelink
+                                    imagelink,
+                                    description,
+                                    category,
                                 })
                             }}>
                             <GradientBGIcon
@@ -99,7 +100,9 @@ const ImageBackgroundInfo: React.FC<ImageBackgroundInfoProps> = ({
                                     id,
                                     favourite,
                                     name,
-                                    imagelink
+                                    imagelink,
+                                    description,
+                                    category,
                                 })
                             }}>
                             <GradientBGIcon

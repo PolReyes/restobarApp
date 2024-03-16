@@ -27,7 +27,7 @@ interface ProductCardProps {
     image: string;
     price: any;
     name: string;
-    //description: string;
+    description: string;
     buttonPressHandler: any;
 
 
@@ -48,7 +48,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     id,
     image,
     name,
-    // description,
+    description,
     price,
     buttonPressHandler,
 

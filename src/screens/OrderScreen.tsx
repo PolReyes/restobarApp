@@ -111,7 +111,7 @@ export const OrderScreen = ({ navigation }: Props) => {
                 <View style={styles.containerButton}>
                     {
                         receptions.map((item) => (
-                            <View style={styles.itemButton}>
+                            <View style={styles.itemButton} key={item.id}>
                                 <Pressable style={item.available === 1 ? styles.buttonTable : styles.buttonTableOff} onPress={() => setselectedReception(item)} key={item.id} disabled={item.available === 0 ? true : false}>
                                     <Text style={styles.textButtonTable}>{item.number_table}</Text>
                                 </Pressable>

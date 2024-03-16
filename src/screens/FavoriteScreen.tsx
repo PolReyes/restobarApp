@@ -25,7 +25,7 @@ const FavoriteScreen = ({ navigation }: any) => {
     const ToggleFavourite = (producto: Producto) => {
         FavoritesList.some(({ id }) => id === producto.id) ? deleteFromFavoriteList(producto) : addToFavoriteList(producto);
     };
-
+    console.log(FavoritesList)
     // console.log(FavoritesList, 'Desde favoriteScreen')
     return (
         <View style={styles.ScreenContainer}>

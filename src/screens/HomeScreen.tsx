@@ -9,7 +9,6 @@ import CustomIcon from '../components/CustomIcon';
 import ProductCard from '../components/ProductCard';
 import { Producto } from '../interfaces/appInterfaces';
 import { useStore } from '../store/store';
-import { Background } from '../components/Background';
 import { StackScreenProps } from '@react-navigation/stack';
 
 const getProductList = (category: string, data: any) => {
@@ -35,17 +34,27 @@ export const HomeScreen = ({ navigation }: Props) => {
 
     // const [categories, setCategories] = useState(getCategoriesFromData(categories));
     const [categoryIndex, setCategoryIndex] = useState({
-        index: 1,
-        category: categories[1],
+        index: 6,
+        category: categories[6],
+    });
+
+    const [categoryPlatillos, setCategoryPlatillos] = useState({
+        indexPlatillos: 1,
+        categoryPlatillos: categories[1]
     });
 
     const [sortedProduct, setSortedProduct] = useState<Producto[]>([]);
+    const [platillosList, setPlatillosList] = useState<Producto[]>([]);
 
     useEffect(() => {
         if (categories.length > 0) {
             setCategoryIndex({
-                index: 1,
-                category: categories[1],
+                index: 6,
+                category: categories[6],
+            })
+            setCategoryPlatillos({
+                indexPlatillos: 1,
+                categoryPlatillos: categories[1],
             })
             // console.log(categories, 'desde el useeffect')
         }
@@ -56,6 +65,9 @@ export const HomeScreen = ({ navigation }: Props) => {
         if (categories.length > 0 && products.length > 0) {
             setSortedProduct(
                 getProductList(categoryIndex.category, products)
+            )
+            setPlatillosList(
+                getProductList(categoryPlatillos.categoryPlatillos, products)
             )
         }
 
@@ -204,12 +216,7 @@ export const HomeScreen = ({ navigation }: Props) => {
                     </ScrollView>
 
                 </View>
-                {/*Search input */}
-
-
-
-
-                {/* Bebidas Flatlist */}
+                {/* Platillos Flatlist */}
 
                 <FlatList
                     ref={ListRef}
@@ -230,7 +237,7 @@ export const HomeScreen = ({ navigation }: Props) => {
                                 id={item.id}
                                 image={item.image}
                                 name={item.name}
-                                // description={item.description}
+                                description={item.description}
                                 price={item.price}
                                 buttonPressHandler={() => ProductCardAddToCart(item)}
                                 navigation={navigation}
@@ -239,12 +246,12 @@ export const HomeScreen = ({ navigation }: Props) => {
                     }}
                 />
 
-                <Text style={styles.CoffeeBeansTitle}>Bebidas</Text>
+                <Text style={styles.PlatillosTitle}>Platillos</Text>
 
                 {/* Platillos Flatlist */}
 
                 <FlatList
-                    // ref={ListRef}
+                    ref={ListRef}
                     horizontal
                     ListEmptyComponent={
                         <View style={styles.EmptyListContainer}>
@@ -252,31 +259,21 @@ export const HomeScreen = ({ navigation }: Props) => {
                         </View>
                     }
                     showsHorizontalScrollIndicator={false}
-                    data={products}
-                    contentContainerStyle={[styles.FlatListContainer, {
-                        marginBottom: tabBarHeight,
-                    }]}
+                    data={platillosList}
+                    contentContainerStyle={styles.FlatListContainerPlatillos}
                     keyExtractor={item => item.id}
                     renderItem={({ item }) => {
                         return (
-                            <></>
-                            /* <TouchableOpacity
-                                onPress={() => {
-                                    navigation.push('Details', {
-                                        name: item.name,
-                                        id: item.id,
-                                        categoryId: item.category.id,
-                                    });
-                                }}>
-                                <ProductCard
-                                    id={item.id}
-                                    image={item.image}
-                                    name={item.name}
-                                    // description={item.description}
-                                    price={item.price}
-                                    buttonPressHandler={ProductCardAddToCart}
-                                />
-                            </TouchableOpacity> */
+
+                            <ProductCard
+                                id={item.id}
+                                image={item.image}
+                                name={item.name}
+                                description={item.description}
+                                price={item.price}
+                                buttonPressHandler={() => ProductCardAddToCart(item)}
+                                navigation={navigation}
+                            />
                         );
                     }}
                 />
@@ -359,7 +356,13 @@ const styles = StyleSheet.create({
     FlatListContainer: {
         gap: SPACING.space_20,
         paddingVertical: SPACING.space_20,
-        paddingHorizontal: SPACING.space_30,
+        paddingHorizontal: SPACING.space_20,
+    },
+    FlatListContainerPlatillos: {
+        gap: SPACING.space_20,
+        paddingVertical: SPACING.space_20,
+        paddingHorizontal: SPACING.space_20,
+        marginBottom: 80
     },
     EmptyListContainer: {
         width: Dimensions.get('window').width - SPACING.space_30 * 2,
@@ -367,10 +370,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingVertical: SPACING.space_36 * 3.6,
     },
-    CoffeeBeansTitle: {
+    PlatillosTitle: {
         fontSize: FONTSIZE.size_18,
         marginLeft: SPACING.space_30,
-        marginTop: SPACING.space_20,
+        // marginTop: SPACING.space_20,
         fontFamily: FONTFAMILY.poppins_medium,
         color: COLORS.secondaryLightGreyHex,
     },

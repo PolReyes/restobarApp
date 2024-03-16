@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const signIn = async ({ email, password }: LoginData) => {
         try {
             const { data } = await restoBarApi.post<LoginResponse>('/client/auth/login', { email, password });
+            // const { data } = await axios.get('https://pokeapi.co/api/v2/pokemon/ditto')
             dispatch({
                 type: 'signIn',
                 payload: {
@@ -70,10 +71,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     user: data.data.user
                 }
             })
+            console.log(data)
             await AsyncStorage.setItem('token', data.data.access_token)
 
         } catch (error: any) {
-            console.log(error.response.data.errors);
+            if (axios.isAxiosError(error)) {
+                console.log(error.response);
+            }
             dispatch({
                 type: 'addError',
                 payload: error.response.data.errors[0] || 'Información incorrecta',
